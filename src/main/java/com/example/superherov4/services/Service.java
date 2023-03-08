@@ -38,12 +38,12 @@ public class Service {
         return searchList;
     }
 
-    public List<HeroCountPowersDTO> countPowers(String heroname) {
-        return repository.countPowers(heroname);
+    public List<HeroCountPowersDTO> countPowers(String heroName) {
+        return repository.countPowers(heroName);
     }
 
-    public List<HeroPowerDTO> getSuperheroPowers(String heroname) {
-        return repository.getSuperheroPowers(heroname);
+    public List<HeroPowerDTO> getSuperheroPowers(String heroName) {
+        return repository.getSuperheroPowers(heroName);
     }
 
 }

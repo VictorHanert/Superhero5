@@ -34,22 +34,22 @@ public class SuperheroController {
         return new ResponseEntity<>(superhero, HttpStatus.OK);
     }
 
-    @GetMapping(path = "/{heroname}")
+    @GetMapping(path = "/{heroName}")
     public ResponseEntity<List<SuperheroDTO>> searchForHero
-            (@PathVariable String heroname) {
-        List<SuperheroDTO> superheroes = service.searchForHero(heroname);
+            (@PathVariable String heroName) {
+        List<SuperheroDTO> superheroes = service.searchForHero(heroName);
         return new ResponseEntity<>(superheroes, HttpStatus.OK);
     }
 
-    @GetMapping(path = "/superpower/count/{heroname}")
-    public ResponseEntity<List<HeroCountPowersDTO>> countPowers(@PathVariable String heroname) {
-        List<HeroCountPowersDTO> superheroes = service.countPowers(heroname);
+    @GetMapping(path = "/superpower/count/{heroName}")
+    public ResponseEntity<List<HeroCountPowersDTO>> countPowers(@PathVariable String heroName) {
+        List<HeroCountPowersDTO> superheroes = service.countPowers(heroName);
         return new ResponseEntity<>(superheroes, HttpStatus.OK);
     }
 
-    @GetMapping(path = "/superpower/{heroname}")
-    public ResponseEntity<List<HeroPowerDTO>> getSuperheroPowers(@PathVariable String heroname) {
-        List<HeroPowerDTO> superheroes = service.getSuperheroPowers(heroname);
+    @GetMapping(path = "/superpower/{heroName}")
+    public ResponseEntity<List<HeroPowerDTO>> getSuperheroPowers(@PathVariable String heroName) {
+        List<HeroPowerDTO> superheroes = service.getSuperheroPowers(heroName);
         return new ResponseEntity<>(superheroes, HttpStatus.OK);
     }
 

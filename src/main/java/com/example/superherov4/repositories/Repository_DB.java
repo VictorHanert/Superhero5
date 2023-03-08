@@ -22,7 +22,7 @@ public class Repository_DB {
             while (rs.next()) {
                 int ID = rs.getInt("hero_id");
                 String realName = rs.getString("realName");
-                String heroName = rs.getString("heroname");
+                String heroName = rs.getString("heroName");
                 int creationYear = rs.getInt("creation_year");
                 int cityID = rs.getInt("city_id");
                 superheroes.add(new Superhero(ID, realName, heroName, creationYear, cityID));
@@ -65,7 +65,7 @@ public class Repository_DB {
             while (rs.next()) {
                 int heroId = rs.getInt("hero_id");
                 String realName = rs.getString("realName");
-                String heroName = rs.getString("heroname");
+                String heroName = rs.getString("heroName");
                 int creationYear = rs.getInt("creation_year");
                 int cityId = rs.getInt("city_id");
                 Superhero superhero = new Superhero(heroId, realName, heroName, creationYear, cityId);
@@ -77,45 +77,23 @@ public class Repository_DB {
         return searchList;
     }
 
-    public List<HeroCountPowersDTO> countPowers(String heroName) {
-        List<HeroCountPowersDTO> heroPowerList = new ArrayList<>();
-        String SQL = "select heroName, realName, COUNT(power_id) AS powerCount from superhero " +
-                "join superhero_power using (hero_id) " +
-                "WHERE heroName = ? GROUP BY hero_id, heroName;";
-        try {
-            PreparedStatement ps = DbManager.getConnection().prepareStatement(SQL);
-            ps.setString(1, heroName);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                String heroname = rs.getString("heroName");
-                String realName = rs.getString("realName");
-                int count = rs.getInt("powerCount");
-                HeroCountPowersDTO dto = new HeroCountPowersDTO(heroname, realName, count);
-                heroPowerList.add(dto);
-            }
-            return heroPowerList;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public List<HeroPowerDTO> getSuperheroPowers(String heroname) {
+    public List<HeroPowerDTO> getSuperheroPowers(String searchString) {
         List<HeroPowerDTO> heroPowerList = new ArrayList<>();
         String SQL = "SELECT hero_id, heroname, GROUP_CONCAT(name SEPARATOR ', ') AS superpowers " +
                 "FROM superhero " +
-                "LEFT JOIN superhero_power using (hero_id)" +
-                "LEFT JOIN superpower using (power_id)" +
+                "LEFT JOIN superhero_power USING (hero_id)" +
+                "LEFT JOIN superpower USING (power_id)" +
                 "WHERE heroname = ?;";
         try {
             PreparedStatement ps = DbManager.getConnection().prepareStatement(SQL);
-            ps.setString(1, heroname);
+            ps.setString(1, searchString);
             ResultSet rs = ps.executeQuery();
 
             String currentName = "";
             HeroPowerDTO newPowerDTO = null;
             while (rs.next()) {
                 int hero_id = rs.getInt("hero_id");
-                String heroName = rs.getString("heroname");
+                String heroName = rs.getString("heroName");
                 String superpowers = rs.getString("superpowers");
 
                 if (!currentName.equals(heroName)) {
@@ -124,6 +102,28 @@ public class Repository_DB {
                     currentName = heroName;
                 }
 
+            }
+            return heroPowerList;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<HeroCountPowersDTO> countPowers(String searchString) {
+        List<HeroCountPowersDTO> heroPowerList = new ArrayList<>();
+        String SQL = "SELECT heroName, realName, COUNT(power_id) AS powerCount FROM superhero " +
+                "JOIN superhero_power USING (hero_id) " +
+                "WHERE heroName = ? GROUP BY hero_id, heroName;";
+        try {
+            PreparedStatement ps = DbManager.getConnection().prepareStatement(SQL);
+            ps.setString(1, searchString);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String heroName = rs.getString("heroName");
+                String realName = rs.getString("realName");
+                int count = rs.getInt("powerCount");
+                HeroCountPowersDTO dto = new HeroCountPowersDTO(heroName, realName, count);
+                heroPowerList.add(dto);
             }
             return heroPowerList;
         } catch (SQLException e) {
