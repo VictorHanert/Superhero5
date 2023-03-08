@@ -25,9 +25,18 @@ public class SuperheroController {
         return new ResponseEntity<>(superheroes, HttpStatus.OK);
     }
 
-    @GetMapping(path = "/{heroID}")
+    @GetMapping(path = "/ID/{heroID}")
     public ResponseEntity<Superhero> findSuperheroByID(@PathVariable int heroID) {
         Superhero superhero = service.findSuperheroByID(heroID);
         return new ResponseEntity<>(superhero, HttpStatus.OK);
     }
+
+    @GetMapping(path = "/name/{heroname}")
+    public ResponseEntity<Superhero> findSuperheroByName(@PathVariable String heroname) {
+        Superhero superhero = service.findSuperheroByName(heroname);
+        return new ResponseEntity<>(superhero, HttpStatus.OK);
+    }
+
+
+
 }

@@ -51,4 +51,25 @@ public class Repository_DB {
         }
         return null;
     }
+
+    public Superhero findSuperheroByName(String heroname) {
+        String SQL = "SELECT * FROM superhero WHERE heroname = ?;";
+
+        try {
+            PreparedStatement ps = DbManager.getConnection().prepareStatement(SQL);
+            ps.setString(1, heroname);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int heroId = rs.getInt("hero_id");
+                String realName = rs.getString("realName");
+                String heroName = rs.getString("heroname");
+                int creationYear = rs.getInt("creation_year");
+                int cityID = rs.getInt("city_id");
+                return new Superhero(heroId, realName, heroName, creationYear, cityID);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

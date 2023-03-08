@@ -23,4 +23,7 @@ public class Service {
         return repository.findSuperheroByID(heroID);
     }
 
+    public Superhero findSuperheroByName(String heroname) {
+        return repository.findSuperheroByName(heroname);
+    }
 }
