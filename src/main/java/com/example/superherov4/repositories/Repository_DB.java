@@ -1,5 +1,6 @@
 package com.example.superherov4.repositories;
 
+import com.example.superherov4.dto.CityHeroDTO;
 import com.example.superherov4.dto.HeroCountPowersDTO;
 import com.example.superherov4.dto.HeroPowerDTO;
 import com.example.superherov4.model.Superhero;
@@ -12,7 +13,7 @@ import java.util.List;
 @Repository
 public class Repository_DB {
 
-    public List<Superhero> getSuperheroes() {
+    public List<Superhero> getAllSuperheroes() {
         List<Superhero> superheroes = new ArrayList<>();
         String SQL = "SELECT * FROM superhero;";
 
@@ -89,19 +90,11 @@ public class Repository_DB {
             ps.setString(1, searchString);
             ResultSet rs = ps.executeQuery();
 
-            String currentName = "";
-            HeroPowerDTO newPowerDTO = null;
             while (rs.next()) {
                 int hero_id = rs.getInt("hero_id");
                 String heroName = rs.getString("heroName");
                 String superpowers = rs.getString("superpowers");
-
-                if (!currentName.equals(heroName)) {
-                    newPowerDTO = new HeroPowerDTO(hero_id, heroName, new ArrayList<>(List.of(superpowers)));
-                    heroPowerList.add(newPowerDTO);
-                    currentName = heroName;
-                }
-
+                heroPowerList.add(new HeroPowerDTO(hero_id, heroName, new ArrayList<>(List.of(superpowers))));
             }
             return heroPowerList;
         } catch (SQLException e) {
@@ -126,6 +119,25 @@ public class Repository_DB {
                 heroPowerList.add(dto);
             }
             return heroPowerList;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<CityHeroDTO> getHeroByCity(String searchString) {
+        List<CityHeroDTO> heroCityList = new ArrayList<>();
+        String SQL = "SELECT heroName, name AS cityName FROM superhero JOIN city USING (city_id) WHERE heroName = ?;";
+        try {
+            PreparedStatement ps = DbManager.getConnection().prepareStatement(SQL);
+            ps.setString(1, searchString);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String heroName = rs.getString("heroName");
+                String cityName = rs.getString("cityName");
+                CityHeroDTO dto = new CityHeroDTO(heroName, cityName);
+                heroCityList.add(dto);
+            }
+            return heroCityList;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

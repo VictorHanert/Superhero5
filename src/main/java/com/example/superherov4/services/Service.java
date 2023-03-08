@@ -1,5 +1,6 @@
 package com.example.superherov4.services;
 
+import com.example.superherov4.dto.CityHeroDTO;
 import com.example.superherov4.dto.HeroCountPowersDTO;
 import com.example.superherov4.dto.HeroPowerDTO;
 import com.example.superherov4.dto.SuperheroDTO;
@@ -21,8 +22,8 @@ public class Service {
         this.repository = repository;
     }
 
-    public List<Superhero> getSuperheroes() {
-        return repository.getSuperheroes();
+    public List<Superhero> getAllSuperheroes() {
+        return repository.getAllSuperheroes();
     }
 
     public Superhero findSuperheroByID(int heroID) {
@@ -46,4 +47,7 @@ public class Service {
         return repository.getSuperheroPowers(heroName);
     }
 
+    public List<CityHeroDTO> getHeroByCity(String heroName) {
+        return repository.getHeroByCity(heroName);
+    }
 }

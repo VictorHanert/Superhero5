@@ -1,5 +1,6 @@
 package com.example.superherov4.controller;
 
+import com.example.superherov4.dto.CityHeroDTO;
 import com.example.superherov4.dto.HeroCountPowersDTO;
 import com.example.superherov4.dto.HeroPowerDTO;
 import com.example.superherov4.dto.SuperheroDTO;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -23,8 +25,8 @@ public class SuperheroController {
     }
 
     @GetMapping(path = {"", "/"})
-    public ResponseEntity<List<Superhero>> allSuperheroes() {
-        List<Superhero> superheroes = service.getSuperheroes();
+    public ResponseEntity<List<Superhero>> getAllSuperheroes() {
+        List<Superhero> superheroes = service.getAllSuperheroes();
         return new ResponseEntity<>(superheroes, HttpStatus.OK);
     }
 
@@ -36,7 +38,7 @@ public class SuperheroController {
 
     @GetMapping(path = "/{heroName}")
     public ResponseEntity<List<SuperheroDTO>> searchForHero
-            (@PathVariable String heroName) {
+            (@PathVariable(required = false) String heroName) {
         List<SuperheroDTO> superheroes = service.searchForHero(heroName);
         return new ResponseEntity<>(superheroes, HttpStatus.OK);
     }
@@ -50,6 +52,12 @@ public class SuperheroController {
     @GetMapping(path = "/superpower/{heroName}")
     public ResponseEntity<List<HeroPowerDTO>> getSuperheroPowers(@PathVariable String heroName) {
         List<HeroPowerDTO> superheroes = service.getSuperheroPowers(heroName);
+        return new ResponseEntity<>(superheroes, HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/city/{heroName}")
+    public ResponseEntity<List<CityHeroDTO>> getHeroByCity(@PathVariable String heroName) {
+        List<CityHeroDTO> superheroes = service.getHeroByCity(heroName);
         return new ResponseEntity<>(superheroes, HttpStatus.OK);
     }
 
