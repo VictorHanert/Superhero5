@@ -1,7 +1,7 @@
 package com.example.superherov4.repositories;
 
+import com.example.superherov4.dto.HeroCountPowersDTO;
 import com.example.superherov4.dto.HeroPowerDTO;
-import com.example.superherov4.dto.SuperheroDTO;
 import com.example.superherov4.model.Superhero;
 import org.springframework.stereotype.Repository;
 
@@ -54,26 +54,52 @@ public class Repository_DB {
         return null;
     }
 
-    public SuperheroDTO findSuperheroByName(String heroname) {
-        String SQL = "SELECT heroname, realName, creation_year FROM superhero WHERE heroname = ?;";
+    public List<Superhero> searchForHero(String searchString) {
+        String SQL = "SELECT * FROM superhero WHERE lower(heroname) LIKE ?";
+        List<Superhero> searchList = new ArrayList<>();
 
         try {
             PreparedStatement ps = DbManager.getConnection().prepareStatement(SQL);
-            ps.setString(1, heroname);
+            ps.setString(1, "%" + searchString.toLowerCase() + "%");
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
+            while (rs.next()) {
+                int heroId = rs.getInt("hero_id");
                 String realName = rs.getString("realName");
                 String heroName = rs.getString("heroname");
                 int creationYear = rs.getInt("creation_year");
-                return new SuperheroDTO(realName, heroName, creationYear);
+                int cityId = rs.getInt("city_id");
+                Superhero superhero = new Superhero(heroId, realName, heroName, creationYear, cityId);
+                searchList.add(superhero);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return searchList;
     }
 
-    public List<HeroPowerDTO> getSuperheroPowers(String heroname){
+    public List<HeroCountPowersDTO> countPowers(String heroName) {
+        List<HeroCountPowersDTO> heroPowerList = new ArrayList<>();
+        String SQL = "select heroName, realName, COUNT(power_id) AS powerCount from superhero " +
+                "join superhero_power using (hero_id) " +
+                "WHERE heroName = ? GROUP BY hero_id, heroName;";
+        try {
+            PreparedStatement ps = DbManager.getConnection().prepareStatement(SQL);
+            ps.setString(1, heroName);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String heroname = rs.getString("heroName");
+                String realName = rs.getString("realName");
+                int count = rs.getInt("powerCount");
+                HeroCountPowersDTO dto = new HeroCountPowersDTO(heroname, realName, count);
+                heroPowerList.add(dto);
+            }
+            return heroPowerList;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<HeroPowerDTO> getSuperheroPowers(String heroname) {
         List<HeroPowerDTO> heroPowerList = new ArrayList<>();
         String SQL = "SELECT hero_id, heroname, GROUP_CONCAT(name SEPARATOR ', ') AS superpowers " +
                 "FROM superhero " +
@@ -92,13 +118,14 @@ public class Repository_DB {
                 String heroName = rs.getString("heroname");
                 String superpowers = rs.getString("superpowers");
 
-                if (!currentName.equals(heroName)){
+                if (!currentName.equals(heroName)) {
                     newPowerDTO = new HeroPowerDTO(hero_id, heroName, new ArrayList<>(List.of(superpowers)));
                     heroPowerList.add(newPowerDTO);
                     currentName = heroName;
                 }
 
-            } return heroPowerList;
+            }
+            return heroPowerList;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

@@ -1,5 +1,6 @@
 package com.example.superherov4.controller;
 
+import com.example.superherov4.dto.HeroCountPowersDTO;
 import com.example.superherov4.dto.HeroPowerDTO;
 import com.example.superherov4.dto.SuperheroDTO;
 import com.example.superherov4.model.Superhero;
@@ -33,10 +34,17 @@ public class SuperheroController {
         return new ResponseEntity<>(superhero, HttpStatus.OK);
     }
 
-    @GetMapping(path = "/name/{heroname}")
-    public ResponseEntity<SuperheroDTO> findSuperheroByName(@PathVariable String heroname) {
-        SuperheroDTO superhero = service.findSuperheroByName(heroname);
-        return new ResponseEntity<>(superhero, HttpStatus.OK);
+    @GetMapping(path = "/{heroname}")
+    public ResponseEntity<List<SuperheroDTO>> searchForHero
+            (@PathVariable String heroname) {
+        List<SuperheroDTO> superheroes = service.searchForHero(heroname);
+        return new ResponseEntity<>(superheroes, HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/superpower/count/{heroname}")
+    public ResponseEntity<List<HeroCountPowersDTO>> countPowers(@PathVariable String heroname) {
+        List<HeroCountPowersDTO> superheroes = service.countPowers(heroname);
+        return new ResponseEntity<>(superheroes, HttpStatus.OK);
     }
 
     @GetMapping(path = "/superpower/{heroname}")
@@ -44,4 +52,5 @@ public class SuperheroController {
         List<HeroPowerDTO> superheroes = service.getSuperheroPowers(heroname);
         return new ResponseEntity<>(superheroes, HttpStatus.OK);
     }
+
 }
