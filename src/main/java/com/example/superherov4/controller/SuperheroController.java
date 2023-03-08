@@ -1,5 +1,7 @@
 package com.example.superherov4.controller;
 
+import com.example.superherov4.dto.HeroPowerDTO;
+import com.example.superherov4.dto.SuperheroDTO;
 import com.example.superherov4.model.Superhero;
 import com.example.superherov4.services.Service;
 import org.springframework.http.HttpStatus;
@@ -32,11 +34,14 @@ public class SuperheroController {
     }
 
     @GetMapping(path = "/name/{heroname}")
-    public ResponseEntity<Superhero> findSuperheroByName(@PathVariable String heroname) {
-        Superhero superhero = service.findSuperheroByName(heroname);
+    public ResponseEntity<SuperheroDTO> findSuperheroByName(@PathVariable String heroname) {
+        SuperheroDTO superhero = service.findSuperheroByName(heroname);
         return new ResponseEntity<>(superhero, HttpStatus.OK);
     }
 
-
-
+    @GetMapping(path = "/superpower/{heroname}")
+    public ResponseEntity<List<HeroPowerDTO>> getSuperheroPowers(@PathVariable String heroname) {
+        List<HeroPowerDTO> superheroes = service.getSuperheroPowers(heroname);
+        return new ResponseEntity<>(superheroes, HttpStatus.OK);
+    }
 }

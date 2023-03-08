@@ -3,22 +3,22 @@ package com.example.superherov4.dto;
 import java.util.List;
 
 public class HeroPowerDTO {
+    private int hero_id;
     private String heroName;
-    private String realName;
     List<String> powerList;
 
-    public HeroPowerDTO(String heroName, String realName, List<String> powerList) {
+    public HeroPowerDTO(int hero_id, String heroName, List<String> powerList) {
+        this.hero_id = hero_id;
         this.heroName = heroName;
-        this.realName = realName;
         this.powerList = powerList;
+    }
+
+    public int getHero_id() {
+        return hero_id;
     }
 
     public String getHeroName() {
         return heroName;
-    }
-
-    public String getRealName() {
-        return realName;
     }
 
     public List<String> getPowerList() {

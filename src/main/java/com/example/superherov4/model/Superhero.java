@@ -18,6 +18,16 @@ public class Superhero {
         this.cityID = cityID;
     }
 
+    public Superhero() {
+        //empty
+    }
+
+    public Superhero(String realName, String heroName, int creationYear) {
+        this.realName = realName;
+        this.heroName = heroName;
+        this.creationYear = creationYear;
+    }
+
     // Printing out if heroName is empty
     public String getHeroName() {
         if (heroName.isEmpty()) {
