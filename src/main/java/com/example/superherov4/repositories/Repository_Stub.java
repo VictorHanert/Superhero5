@@ -1,8 +1,5 @@
 package com.example.superherov4.repositories;
 
-import com.example.superherov4.dto.CityHeroDTO;
-import com.example.superherov4.dto.HeroPowerDTO;
-import com.example.superherov4.dto.SuperheroDTO;
 import com.example.superherov4.model.Superhero;
 import org.springframework.stereotype.Repository;
 
@@ -10,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@Repository("Array")
+@Repository("Repository_Stub")
 public class Repository_Stub {
     ArrayList<Superhero> superheroes = new ArrayList<>();
 

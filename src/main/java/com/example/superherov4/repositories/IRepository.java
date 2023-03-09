@@ -3,16 +3,17 @@ package com.example.superherov4.repositories;
 import com.example.superherov4.dto.CityHeroDTO;
 import com.example.superherov4.dto.HeroCountPowersDTO;
 import com.example.superherov4.dto.HeroPowerDTO;
+import com.example.superherov4.dto.SuperheroDTO;
 import com.example.superherov4.model.Superhero;
 
 import java.util.List;
 
-public interface ISuperheroRepository {
+public interface IRepository {
     List<Superhero> getAllSuperheroes();
 
     Superhero findSuperheroByID(int heroID);
 
-    List<Superhero> searchForHero(String searchString);
+    List<SuperheroDTO> searchForHero(String searchString);
 
     List<HeroPowerDTO> getSuperheroPowers(String searchString);
 

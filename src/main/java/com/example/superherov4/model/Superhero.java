@@ -11,8 +11,6 @@ public class Superhero {
     private int cityID;
     List<String> powerList;
 
-
-
     // constructor
     public Superhero(int heroID, String realName, String heroName, int creationYear, int cityID) {
         this.heroID = heroID;
@@ -20,16 +18,6 @@ public class Superhero {
         this.heroName = heroName;
         this.creationYear = creationYear;
         this.cityID = cityID;
-    }
-
-    public Superhero() {
-        //empty
-    }
-
-    public Superhero(String realName, String heroName, int creationYear) {
-        this.realName = realName;
-        this.heroName = heroName;
-        this.creationYear = creationYear;
     }
 
     // Printing out if heroName is empty

@@ -31,16 +31,11 @@ public class Service {
     }
 
     public List<SuperheroDTO> searchForHero(String searchString) {
-        List<Superhero> superheroes = repository.searchForHero(searchString);
-        List<SuperheroDTO> searchList = new ArrayList<>();
-        for (Superhero superhero : superheroes) {
-            searchList.add(new SuperheroDTO(superhero.getRealName(), superhero.getHeroName(), superhero.getCreationYear()));
-        }
-        return searchList;
+        return repository.searchForHero(searchString);
     }
 
-    public List<HeroCountPowersDTO> countPowers(String heroName) {
-        return repository.countPowers(heroName);
+    public List<HeroCountPowersDTO> countPowers(String searchString) {
+        return repository.countPowers(searchString);
     }
 
     public List<HeroCountPowersDTO> countAllPowers() {
@@ -56,8 +51,8 @@ public class Service {
         return repository.getAllSuperheroPowers();
     }
 
-    public List<CityHeroDTO> getHeroByCity(String heroName) {
-        return repository.getHeroByCity(heroName);
+    public List<CityHeroDTO> getHeroByCity(String searchString) {
+        return repository.getHeroByCity(searchString);
     }
 
     public List<CityHeroDTO> getAllHeroByCity() {

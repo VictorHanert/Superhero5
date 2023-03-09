@@ -3,6 +3,7 @@ package com.example.superherov4.repositories;
 import com.example.superherov4.dto.CityHeroDTO;
 import com.example.superherov4.dto.HeroCountPowersDTO;
 import com.example.superherov4.dto.HeroPowerDTO;
+import com.example.superherov4.dto.SuperheroDTO;
 import com.example.superherov4.model.Superhero;
 import org.springframework.stereotype.Repository;
 
@@ -10,11 +11,15 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Repository
-public class Repository_DB implements ISuperheroRepository{
+@Repository("Repository_DB")
+public class Repository_DB implements IRepository {
+    List<Superhero> superheroes = new ArrayList<>();
+    List<SuperheroDTO> searchList = new ArrayList<>();
+    List<HeroPowerDTO> heroCountPowerList = new ArrayList<>();
+    List<HeroCountPowersDTO> heroPowerList = new ArrayList<>();
+    List<CityHeroDTO> superheroesByCity = new ArrayList<>();
 
     public List<Superhero> getAllSuperheroes() {
-        List<Superhero> superheroes = new ArrayList<>();
         String SQL = "SELECT * FROM superhero;";
 
         try {
@@ -55,21 +60,19 @@ public class Repository_DB implements ISuperheroRepository{
         return null;
     }
 
-    public List<Superhero> searchForHero(String searchString) {
+    public List<SuperheroDTO> searchForHero(String searchString) {
         String SQL = "SELECT * FROM superhero WHERE lower(heroname) LIKE ?";
-        List<Superhero> searchList = new ArrayList<>();
 
         try {
             PreparedStatement ps = DbManager.getConnection().prepareStatement(SQL);
             ps.setString(1, "%" + searchString.toLowerCase() + "%");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                int heroId = rs.getInt("hero_id");
+                int heroID = rs.getInt("hero_id");
                 String realName = rs.getString("realName");
                 String heroName = rs.getString("heroName");
                 int creationYear = rs.getInt("creation_year");
-                int cityId = rs.getInt("city_id");
-                searchList.add(new Superhero(heroId, realName, heroName, creationYear, cityId));
+                searchList.add(new SuperheroDTO(heroID, realName, heroName, creationYear));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -78,15 +81,14 @@ public class Repository_DB implements ISuperheroRepository{
     }
 
     public List<HeroPowerDTO> getSuperheroPowers(String searchString) {
-        List<HeroPowerDTO> heroPowerList = new ArrayList<>();
         String SQL = "SELECT hero_id, heroname, GROUP_CONCAT(name SEPARATOR ', ') AS superpowers " +
                 "FROM superhero " +
                 "LEFT JOIN superhero_power USING (hero_id)" +
                 "LEFT JOIN superpower USING (power_id)" +
-                "WHERE heroname = ?;";
+                "WHERE lower(heroname) LIKE ? GROUP BY hero_id;";
         try {
             PreparedStatement ps = DbManager.getConnection().prepareStatement(SQL);
-            ps.setString(1, searchString);
+            ps.setString(1, "%" + searchString.toLowerCase() + "%");
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -99,16 +101,15 @@ public class Repository_DB implements ISuperheroRepository{
                 else {
                     superpowers = "Hero has no superpowers";
                 }
-                heroPowerList.add(new HeroPowerDTO(hero_id, heroName, new ArrayList<>(List.of(superpowers))));
+                heroCountPowerList.add(new HeroPowerDTO(hero_id, heroName, new ArrayList<>(List.of(superpowers))));
             }
-            return heroPowerList;
+            return heroCountPowerList;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     public List<HeroPowerDTO> getAllSuperheroPowers() {
-        List<HeroPowerDTO> heroPowerList = new ArrayList<>();
         String SQL = "SELECT hero_id, heroname, GROUP_CONCAT(name SEPARATOR ', ') AS superpowers " +
                 "FROM superhero " +
                 "LEFT JOIN superhero_power USING (hero_id)" +
@@ -128,22 +129,21 @@ public class Repository_DB implements ISuperheroRepository{
                 else {
                     superpowers = "Hero has no superpowers";
                 }
-                heroPowerList.add(new HeroPowerDTO(hero_id, heroName, new ArrayList<>(List.of(superpowers))));
+                heroCountPowerList.add(new HeroPowerDTO(hero_id, heroName, new ArrayList<>(List.of(superpowers))));
             }
-            return heroPowerList;
+            return heroCountPowerList;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     public List<HeroCountPowersDTO> countPowers(String searchString) {
-        List<HeroCountPowersDTO> heroPowerList = new ArrayList<>();
         String SQL = "SELECT heroName, realName, COUNT(power_id) AS powerCount FROM superhero " +
                 "JOIN superhero_power USING (hero_id) " +
-                "WHERE heroName = ? GROUP BY hero_id, heroName;";
+                "WHERE lower(heroName) LIKE ? GROUP BY hero_id, heroName;";
         try {
             PreparedStatement ps = DbManager.getConnection().prepareStatement(SQL);
-            ps.setString(1, searchString);
+            ps.setString(1, "%" + searchString.toLowerCase() + "%");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 String heroName = rs.getString("heroName");
@@ -158,7 +158,6 @@ public class Repository_DB implements ISuperheroRepository{
     }
 
     public List<HeroCountPowersDTO> countAllPowers() {
-        List<HeroCountPowersDTO> heroPowerList = new ArrayList<>();
         String SQL = "SELECT heroName, realName, COUNT(power_id) AS powerCount FROM superhero " +
                 "JOIN superhero_power USING (hero_id) " +
                 "GROUP BY hero_id, heroName;";
@@ -178,25 +177,26 @@ public class Repository_DB implements ISuperheroRepository{
     }
 
     public List<CityHeroDTO> getHeroByCity(String searchString) {
-        List<CityHeroDTO> heroCityList = new ArrayList<>();
-        String SQL = "SELECT heroName, name AS cityName FROM superhero JOIN city USING (city_id) WHERE heroName = ?;";
+        String SQL = "SELECT heroName, name AS cityName FROM superhero " +
+                "JOIN city USING (city_id) " +
+                "WHERE heroName LIKE ?" +
+                "GROUP BY hero_id;";
         try {
             PreparedStatement ps = DbManager.getConnection().prepareStatement(SQL);
-            ps.setString(1, searchString);
+            ps.setString(1, "%" + searchString.toLowerCase() + "%");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 String heroName = rs.getString("heroName");
                 String cityName = rs.getString("cityName");
-                heroCityList.add(new CityHeroDTO(heroName, cityName));
+                superheroesByCity.add(new CityHeroDTO(heroName, cityName));
             }
-            return heroCityList;
+            return superheroesByCity;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     public List<CityHeroDTO> getAllHeroByCity() {
-        List<CityHeroDTO> superheroesByCity = new ArrayList<>();
         String SQL = "SELECT heroName, name AS cityName FROM superhero JOIN city USING (city_id);";
 
         try {
