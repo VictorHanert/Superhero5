@@ -1,5 +1,7 @@
 package com.example.superherov4.model;
 
+import java.util.List;
+
 public class Superhero {
     // attributes
     private int heroID;
@@ -7,6 +9,8 @@ public class Superhero {
     private String heroName;
     private int creationYear;
     private int cityID;
+    List<String> powerList;
+
 
 
     // constructor

@@ -43,11 +43,24 @@ public class Service {
         return repository.countPowers(heroName);
     }
 
-    public List<HeroPowerDTO> getSuperheroPowers(String heroName) {
-        return repository.getSuperheroPowers(heroName);
+    public List<HeroCountPowersDTO> countAllPowers() {
+        return repository.countAllPowers();
+    }
+
+    public List<HeroPowerDTO> getSuperheroPowers(String searchString) {
+        return repository.getSuperheroPowers(searchString);
+        }
+
+
+        public List<HeroPowerDTO> getAllSuperheroPowers() {
+        return repository.getAllSuperheroPowers();
     }
 
     public List<CityHeroDTO> getHeroByCity(String heroName) {
         return repository.getHeroByCity(heroName);
+    }
+
+    public List<CityHeroDTO> getAllHeroByCity() {
+        return repository.getAllHeroByCity();
     }
 }

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class Repository_DB {
+public class Repository_DB implements ISuperheroRepository{
 
     public List<Superhero> getAllSuperheroes() {
         List<Superhero> superheroes = new ArrayList<>();
@@ -69,8 +69,7 @@ public class Repository_DB {
                 String heroName = rs.getString("heroName");
                 int creationYear = rs.getInt("creation_year");
                 int cityId = rs.getInt("city_id");
-                Superhero superhero = new Superhero(heroId, realName, heroName, creationYear, cityId);
-                searchList.add(superhero);
+                searchList.add(new Superhero(heroId, realName, heroName, creationYear, cityId));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -93,7 +92,42 @@ public class Repository_DB {
             while (rs.next()) {
                 int hero_id = rs.getInt("hero_id");
                 String heroName = rs.getString("heroName");
-                String superpowers = rs.getString("superpowers");
+                String superpowers;
+                if (!(rs.getString("superpowers") == null)) {
+                    superpowers = rs.getString("superpowers");
+                }
+                else {
+                    superpowers = "Hero has no superpowers";
+                }
+                heroPowerList.add(new HeroPowerDTO(hero_id, heroName, new ArrayList<>(List.of(superpowers))));
+            }
+            return heroPowerList;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<HeroPowerDTO> getAllSuperheroPowers() {
+        List<HeroPowerDTO> heroPowerList = new ArrayList<>();
+        String SQL = "SELECT hero_id, heroname, GROUP_CONCAT(name SEPARATOR ', ') AS superpowers " +
+                "FROM superhero " +
+                "LEFT JOIN superhero_power USING (hero_id)" +
+                "LEFT JOIN superpower USING (power_id)" +
+                "GROUP BY hero_id;";
+        try {
+            Statement stmt = DbManager.getConnection().prepareStatement(SQL);
+            ResultSet rs = stmt.executeQuery(SQL);
+
+            while (rs.next()) {
+                int hero_id = rs.getInt("hero_id");
+                String heroName = rs.getString("heroName");
+                String superpowers;
+                if (!(rs.getString("superpowers") == null)) {
+                    superpowers = rs.getString("superpowers");
+                }
+                else {
+                    superpowers = "Hero has no superpowers";
+                }
                 heroPowerList.add(new HeroPowerDTO(hero_id, heroName, new ArrayList<>(List.of(superpowers))));
             }
             return heroPowerList;
@@ -115,8 +149,27 @@ public class Repository_DB {
                 String heroName = rs.getString("heroName");
                 String realName = rs.getString("realName");
                 int count = rs.getInt("powerCount");
-                HeroCountPowersDTO dto = new HeroCountPowersDTO(heroName, realName, count);
-                heroPowerList.add(dto);
+                heroPowerList.add(new HeroCountPowersDTO(heroName, realName, count));
+            }
+            return heroPowerList;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<HeroCountPowersDTO> countAllPowers() {
+        List<HeroCountPowersDTO> heroPowerList = new ArrayList<>();
+        String SQL = "SELECT heroName, realName, COUNT(power_id) AS powerCount FROM superhero " +
+                "JOIN superhero_power USING (hero_id) " +
+                "GROUP BY hero_id, heroName;";
+        try {
+            Statement stmt = DbManager.getConnection().prepareStatement(SQL);
+            ResultSet rs = stmt.executeQuery(SQL);
+            while (rs.next()) {
+                String heroName = rs.getString("heroName");
+                String realName = rs.getString("realName");
+                int count = rs.getInt("powerCount");
+                heroPowerList.add(new HeroCountPowersDTO(heroName, realName, count));
             }
             return heroPowerList;
         } catch (SQLException e) {
@@ -134,10 +187,27 @@ public class Repository_DB {
             while (rs.next()) {
                 String heroName = rs.getString("heroName");
                 String cityName = rs.getString("cityName");
-                CityHeroDTO dto = new CityHeroDTO(heroName, cityName);
-                heroCityList.add(dto);
+                heroCityList.add(new CityHeroDTO(heroName, cityName));
             }
             return heroCityList;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<CityHeroDTO> getAllHeroByCity() {
+        List<CityHeroDTO> superheroesByCity = new ArrayList<>();
+        String SQL = "SELECT heroName, name AS cityName FROM superhero JOIN city USING (city_id);";
+
+        try {
+            Statement stmt = DbManager.getConnection().prepareStatement(SQL);
+            ResultSet rs = stmt.executeQuery(SQL);
+            while (rs.next()) {
+                String heroName = rs.getString("heroName");
+                String cityName = rs.getString("cityName");
+                superheroesByCity.add(new CityHeroDTO(heroName, cityName));
+            }
+            return superheroesByCity;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

@@ -43,15 +43,33 @@ public class SuperheroController {
         return new ResponseEntity<>(superheroes, HttpStatus.OK);
     }
 
+    @GetMapping(path = {"/superpower/count/","/superpower/count"})
+    public ResponseEntity<List<HeroCountPowersDTO>> countAllPowers() {
+        List<HeroCountPowersDTO> superheroes = service.countAllPowers();
+        return new ResponseEntity<>(superheroes, HttpStatus.OK);
+    }
+
     @GetMapping(path = "/superpower/count/{heroName}")
     public ResponseEntity<List<HeroCountPowersDTO>> countPowers(@PathVariable String heroName) {
         List<HeroCountPowersDTO> superheroes = service.countPowers(heroName);
         return new ResponseEntity<>(superheroes, HttpStatus.OK);
     }
 
+    @GetMapping(path = {"/superpower/","/superpower"})
+    public ResponseEntity<List<HeroPowerDTO>> getAllSuperheroPowers() {
+        List<HeroPowerDTO> superheroes = service.getAllSuperheroPowers();
+        return new ResponseEntity<>(superheroes, HttpStatus.OK);
+    }
+
     @GetMapping(path = "/superpower/{heroName}")
     public ResponseEntity<List<HeroPowerDTO>> getSuperheroPowers(@PathVariable String heroName) {
         List<HeroPowerDTO> superheroes = service.getSuperheroPowers(heroName);
+        return new ResponseEntity<>(superheroes, HttpStatus.OK);
+    }
+
+    @GetMapping(path = {"/city/", "/city"})
+    public ResponseEntity<List<CityHeroDTO>> getAllHeroByCity() {
+        List<CityHeroDTO> superheroes = service.getAllHeroByCity();
         return new ResponseEntity<>(superheroes, HttpStatus.OK);
     }
 
