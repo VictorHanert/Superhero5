@@ -40,9 +40,9 @@ public class SuperheroController {
     }
 
     @GetMapping(path = "/{heroName}")
-    public ResponseEntity<List<SuperheroDTO>> searchForHero
+    public ResponseEntity<List<Superhero>> searchForHero
             (@PathVariable(required = false) String heroName) {
-        List<SuperheroDTO> superheroes = repository.searchForHero(heroName);
+        List<Superhero> superheroes = repository.searchForHero(heroName);
         return new ResponseEntity<>(superheroes, HttpStatus.OK);
     }
 

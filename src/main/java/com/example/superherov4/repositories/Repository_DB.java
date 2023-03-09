@@ -14,9 +14,8 @@ import java.util.List;
 @Repository("Repository_DB")
 public class Repository_DB implements IRepository {
     List<Superhero> superheroes = new ArrayList<>();
-    List<SuperheroDTO> searchList = new ArrayList<>();
-    List<HeroPowerDTO> heroCountPowerList = new ArrayList<>();
-    List<HeroCountPowersDTO> heroPowerList = new ArrayList<>();
+    List<HeroPowerDTO> heroPowerList = new ArrayList<>();
+    List<HeroCountPowersDTO> heroCountPowerList = new ArrayList<>();
     List<CityHeroDTO> superheroesByCity = new ArrayList<>();
 
     public List<Superhero> getAllSuperheroes() {
@@ -60,7 +59,7 @@ public class Repository_DB implements IRepository {
         return null;
     }
 
-    public List<SuperheroDTO> searchForHero(String searchString) {
+    public List<Superhero> searchForHero(String searchString) {
         String SQL = "SELECT * FROM superhero WHERE lower(heroname) LIKE ?";
 
         try {
@@ -72,12 +71,13 @@ public class Repository_DB implements IRepository {
                 String realName = rs.getString("realName");
                 String heroName = rs.getString("heroName");
                 int creationYear = rs.getInt("creation_year");
-                searchList.add(new SuperheroDTO(heroID, realName, heroName, creationYear));
+                int cityID = rs.getInt("city_id");
+                superheroes.add(new Superhero(heroID, realName, heroName, creationYear, cityID));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return searchList;
+        return superheroes;
     }
 
     public List<HeroPowerDTO> getSuperheroPowers(String searchString) {
@@ -101,9 +101,9 @@ public class Repository_DB implements IRepository {
                 else {
                     superpowers = "Hero has no superpowers";
                 }
-                heroCountPowerList.add(new HeroPowerDTO(hero_id, heroName, new ArrayList<>(List.of(superpowers))));
+                heroPowerList.add(new HeroPowerDTO(hero_id, heroName, new ArrayList<>(List.of(superpowers))));
             }
-            return heroCountPowerList;
+            return heroPowerList;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -129,9 +129,9 @@ public class Repository_DB implements IRepository {
                 else {
                     superpowers = "Hero has no superpowers";
                 }
-                heroCountPowerList.add(new HeroPowerDTO(hero_id, heroName, new ArrayList<>(List.of(superpowers))));
+                heroPowerList.add(new HeroPowerDTO(hero_id, heroName, new ArrayList<>(List.of(superpowers))));
             }
-            return heroCountPowerList;
+            return heroPowerList;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -149,9 +149,9 @@ public class Repository_DB implements IRepository {
                 String heroName = rs.getString("heroName");
                 String realName = rs.getString("realName");
                 int count = rs.getInt("powerCount");
-                heroPowerList.add(new HeroCountPowersDTO(heroName, realName, count));
+                heroCountPowerList.add(new HeroCountPowersDTO(heroName, realName, count));
             }
-            return heroPowerList;
+            return heroCountPowerList;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -168,9 +168,9 @@ public class Repository_DB implements IRepository {
                 String heroName = rs.getString("heroName");
                 String realName = rs.getString("realName");
                 int count = rs.getInt("powerCount");
-                heroPowerList.add(new HeroCountPowersDTO(heroName, realName, count));
+                heroCountPowerList.add(new HeroCountPowersDTO(heroName, realName, count));
             }
-            return heroPowerList;
+            return heroCountPowerList;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

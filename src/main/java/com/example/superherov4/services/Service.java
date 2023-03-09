@@ -30,7 +30,7 @@ public class Service {
         return repository.findSuperheroByID(heroID);
     }
 
-    public List<SuperheroDTO> searchForHero(String searchString) {
+    public List<Superhero> searchForHero(String searchString) {
         return repository.searchForHero(searchString);
     }
 

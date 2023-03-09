@@ -9,7 +9,6 @@ public class Superhero {
     private String heroName;
     private int creationYear;
     private int cityID;
-    List<String> powerList;
 
     // constructor
     public Superhero(int heroID, String realName, String heroName, int creationYear, int cityID) {
