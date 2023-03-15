@@ -1,6 +1,4 @@
-package com.example.superherov4.model;
-
-import java.util.List;
+package com.example.superherov5.entity;
 
 public class Superhero {
     // attributes

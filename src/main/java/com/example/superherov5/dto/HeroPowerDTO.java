@@ -1,4 +1,4 @@
-package com.example.superherov4.dto;
+package com.example.superherov5.dto;
 
 import java.util.List;
 

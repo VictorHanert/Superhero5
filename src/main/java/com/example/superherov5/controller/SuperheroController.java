@@ -1,11 +1,10 @@
-package com.example.superherov4.controller;
+package com.example.superherov5.controller;
 
-import com.example.superherov4.dto.CityHeroDTO;
-import com.example.superherov4.dto.HeroCountPowersDTO;
-import com.example.superherov4.dto.HeroPowerDTO;
-import com.example.superherov4.dto.SuperheroDTO;
-import com.example.superherov4.model.Superhero;
-import com.example.superherov4.repositories.IRepository;
+import com.example.superherov5.dto.CityHeroDTO;
+import com.example.superherov5.dto.HeroCountPowersDTO;
+import com.example.superherov5.dto.HeroPowerDTO;
+import com.example.superherov5.entity.Superhero;
+import com.example.superherov5.repositories.IRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;

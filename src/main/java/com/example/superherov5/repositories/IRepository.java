@@ -1,9 +1,9 @@
-package com.example.superherov4.repositories;
+package com.example.superherov5.repositories;
 
-import com.example.superherov4.dto.CityHeroDTO;
-import com.example.superherov4.dto.HeroCountPowersDTO;
-import com.example.superherov4.dto.HeroPowerDTO;
-import com.example.superherov4.model.Superhero;
+import com.example.superherov5.dto.CityHeroDTO;
+import com.example.superherov5.dto.HeroCountPowersDTO;
+import com.example.superherov5.dto.HeroPowerDTO;
+import com.example.superherov5.entity.Superhero;
 
 import java.util.List;
 

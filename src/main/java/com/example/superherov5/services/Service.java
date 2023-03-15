@@ -1,13 +1,11 @@
-package com.example.superherov4.services;
+package com.example.superherov5.services;
 
-import com.example.superherov4.dto.CityHeroDTO;
-import com.example.superherov4.dto.HeroCountPowersDTO;
-import com.example.superherov4.dto.HeroPowerDTO;
-import com.example.superherov4.dto.SuperheroDTO;
-import com.example.superherov4.model.Superhero;
-import com.example.superherov4.repositories.Repository_DB;
+import com.example.superherov5.dto.CityHeroDTO;
+import com.example.superherov5.dto.HeroCountPowersDTO;
+import com.example.superherov5.dto.HeroPowerDTO;
+import com.example.superherov5.entity.Superhero;
+import com.example.superherov5.repositories.Repository_DB;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @org.springframework.stereotype.Service
