@@ -11,6 +11,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,11 +27,12 @@ public class SuperheroController {
         repository = (IRepository) context.getBean(impl);
     }
 
-    @GetMapping(path = {"", "/"})
-    public ResponseEntity<List<Superhero>> getAllSuperheroes() {
-        List<Superhero> superheroes = repository.getAllSuperheroes();
-        return new ResponseEntity<>(superheroes, HttpStatus.OK);
+    @GetMapping({"/",""})
+    public String index(Model model){
+        model.addAttribute("superhero", repository.getAllSuperheroes());
+        return "index";
     }
+
 
     @GetMapping(path = "/ID/{heroID}")
     public ResponseEntity<Superhero> findSuperheroByID(@PathVariable int heroID) {
