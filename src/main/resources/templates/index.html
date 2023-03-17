@@ -8,7 +8,7 @@
 </head>
 <body>
 <nav class="navbar sticky-lg-top navbar-expand-lg bg-primary-subtle p-3">
-    <h1 class="navbar-brand">Superhero Database</h1>
+    <a href="/" class="nav-link"><h1 class="navbar-brand">Superhero Database</h1></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -16,7 +16,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="#">Create Superhero</a>
+                <a class="nav-link" href="/add">Create Superhero</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">Edit Superhero</a>
@@ -25,7 +25,7 @@
                 <a class="nav-link" href="#">Delete Superhero</a>
             </li>
         </ul>
-        <form class="d-inline float-sm-end">
+        <form class="d-inline ms-5">
             <input class="border-xl" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-primary" type="submit">Search</button>
         </form>
@@ -38,7 +38,8 @@
     <th scope="col">Hero name</th>
     <th scope="col">Real name</th>
     <th scope="col">Year</th>
-    <th scope="col">City ID</th>
+    <th scope="col"></th>
+    <th scope="col"></th>
 </tr>
 
 <tr th:each="s : ${superhero}">
@@ -46,8 +47,19 @@
     <td th:text="${s.heroName}"></td>
     <td th:text="${s.realName}"></td>
     <td th:text="${s.creationYear}"></td>
-    <td th:text="${s.cityID}"></td>
+    <td>
+        <a th:href="@{#}">
+        <button type="button" class="btn btn-outline-primary">Edit</button>
+        </a>
+    </td><td>
+        <a th:href="@{#}">
+            <button type="button" class="btn btn-outline-danger">Delete</button>
+        </a>
+    </td>
 </tr>
 </table>
+<a href="/add">
+    <button type="button" class="btn btn-outline-success m-5">Add a superhero</button>
+</a>
 </body>
 </html>

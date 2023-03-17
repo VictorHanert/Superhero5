@@ -1,5 +1,7 @@
 package com.example.superherov5.entity;
 
+import java.util.List;
+
 public class Superhero {
     // attributes
     private int heroID;
@@ -17,13 +19,14 @@ public class Superhero {
         this.cityID = cityID;
     }
 
+    public Superhero() {
+    }
+
     // Printing out if heroName is empty
     public String getHeroName() {
-        if (heroName.isEmpty()) {
-            return "Intet superhelte navn";
-        } else {
+
             return heroName;
-        }
+
     }
 
     public int getHeroID() {
@@ -40,6 +43,26 @@ public class Superhero {
 
     public int getCreationYear() {
         return creationYear;
+    }
+
+    public void setHeroID(int heroID) {
+        this.heroID = heroID;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
+
+    public void setHeroName(String heroName) {
+        this.heroName = heroName;
+    }
+
+    public void setCreationYear(int creationYear) {
+        this.creationYear = creationYear;
+    }
+
+    public void setCityID(int cityID) {
+        this.cityID = cityID;
     }
 }
 

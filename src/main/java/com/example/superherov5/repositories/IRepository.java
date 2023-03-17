@@ -1,6 +1,7 @@
 package com.example.superherov5.repositories;
 
 import com.example.superherov5.dto.CityHeroDTO;
+import com.example.superherov5.dto.FormDTO;
 import com.example.superherov5.dto.HeroCountPowersDTO;
 import com.example.superherov5.dto.HeroPowerDTO;
 import com.example.superherov5.entity.Superhero;
@@ -25,4 +26,10 @@ public interface IRepository {
     List<CityHeroDTO> getHeroByCity(String searchString);
 
     List<CityHeroDTO> getAllHeroByCity();
+
+    void addSuperhero(FormDTO form);
+
+    List<String> getCities();
+
+    List<String> getPowers();
 }

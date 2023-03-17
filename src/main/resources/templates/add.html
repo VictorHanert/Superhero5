@@ -1,10 +1,80 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Superhero</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>    <link rel="stylesheet" th:href="@{/main.css}">
 </head>
 <body>
+<nav class="navbar sticky-lg-top navbar-expand-lg bg-primary-subtle p-3">
+    <a href="/" class="nav-link"><h1 class="navbar-brand">Superhero Database</h1></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/add">Create Superhero</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Edit Superhero</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Delete Superhero</a>
+            </li>
+        </ul>
+        <form class="d-inline ms-5">
+            <input class="border-xl" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-primary" type="submit">Search</button>
+        </form>
+    </div>
+</nav>
+
+<div class="container mt-5">
+    <h1>Create a superhero</h1>
+    <form method="post" th:action="@{/add}" th:object="${hero}">
+        <div class="container pt-2">
+            <label for="realName">Real Name:</label>
+            <input type="text" id="realName" name="realName" th:field="*{realName}">
+        </div>
+
+        <div class="container pt-2">
+            <label for="heroName">Hero Name:</label>
+            <input type="text" id="heroName" name="heroName" th:field="*{heroName}">
+        </div>
+
+        <div class="container pt-2">
+            <label for="creationYear">Creation Year:</label>
+            <input type="text" id="creationYear" name="creationYear" min="1000" max="2030" th:field="*{creationYear}">
+        </div>
+
+        <div class="container pt-2">
+            <label for="city">City:</label>
+            <select id="city" name="city" th:field="*{city}" required>
+                <option value="">Select a city...</option>
+                <option th:each="s : ${cities}" th:value="${s}" th:text="${s}"></option>
+            </select>
+        </div>
+
+        <div class="container pt-2">
+            <label><b>Pick the superpowers:</b></label><br>
+            <span th:each="p : ${superpowers}" class="pt-2">
+            <label>
+                <input type="checkbox" th:id="${'power-' + p}" th:name="'powerList'" th:value="${p}" th:checked="${#lists.contains(powerList, p)}">
+            </label>
+            <label th:for="${'power-' + p}" th:text="${p}"></label>
+                <br>
+        </span>
+        </div>
+
+        <div class="mt-3">
+            <input type="submit" value="Submit" class="btn btn-outline-success m-2"/>
+            <input type="reset" value="Reset" class="btn btn-outline-danger m-2"/>
+        </div>
+    </form>
+</div>
 
 </body>
 </html>

@@ -1,6 +1,7 @@
 package com.example.superherov5.controller;
 
 import com.example.superherov5.dto.CityHeroDTO;
+import com.example.superherov5.dto.FormDTO;
 import com.example.superherov5.dto.HeroCountPowersDTO;
 import com.example.superherov5.dto.HeroPowerDTO;
 import com.example.superherov5.entity.Superhero;
@@ -14,10 +15,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping("superhero")
 public class SuperheroController {
 
     IRepository repository;
@@ -27,60 +28,26 @@ public class SuperheroController {
         repository = (IRepository) context.getBean(impl);
     }
 
+    @GetMapping("/add")
+    public String showAddSuperheroPage(Model model) {
+        FormDTO hero = new FormDTO();
+        model.addAttribute("hero", hero);
+        model.addAttribute("cities", repository.getCities());
+        model.addAttribute("superpowers", repository.getPowers());
+        model.addAttribute("powerList", new ArrayList<String>());
+        return "add";
+    }
+
+    @PostMapping("/add")
+    public String addSuperhero(@ModelAttribute FormDTO form) {
+        repository.addSuperhero(form);
+        return "redirect:/";
+    }
+
     @GetMapping({"/",""})
     public String index(Model model){
         model.addAttribute("superhero", repository.getAllSuperheroes());
         return "index";
-    }
-
-
-    @GetMapping(path = "/ID/{heroID}")
-    public ResponseEntity<Superhero> findSuperheroByID(@PathVariable int heroID) {
-        Superhero superhero = repository.findSuperheroByID(heroID);
-        return new ResponseEntity<>(superhero, HttpStatus.OK);
-    }
-
-    @GetMapping(path = "/{heroName}")
-    public ResponseEntity<List<Superhero>> searchForHero
-            (@PathVariable(required = false) String heroName) {
-        List<Superhero> superheroes = repository.searchForHero(heroName);
-        return new ResponseEntity<>(superheroes, HttpStatus.OK);
-    }
-
-    @GetMapping(path = {"/superpower/count/","/superpower/count"})
-    public ResponseEntity<List<HeroCountPowersDTO>> countAllPowers() {
-        List<HeroCountPowersDTO> superheroes = repository.countAllPowers();
-        return new ResponseEntity<>(superheroes, HttpStatus.OK);
-    }
-
-    @GetMapping(path = "/superpower/count/{heroName}")
-    public ResponseEntity<List<HeroCountPowersDTO>> countPowers(@PathVariable String heroName) {
-        List<HeroCountPowersDTO> superheroes = repository.countPowers(heroName);
-        return new ResponseEntity<>(superheroes, HttpStatus.OK);
-    }
-
-    @GetMapping(path = {"/superpower/","/superpower"})
-    public ResponseEntity<List<HeroPowerDTO>> getAllSuperheroPowers() {
-        List<HeroPowerDTO> superheroes = repository.getAllSuperheroPowers();
-        return new ResponseEntity<>(superheroes, HttpStatus.OK);
-    }
-
-    @GetMapping(path = "/superpower/{heroName}")
-    public ResponseEntity<List<HeroPowerDTO>> getSuperheroPowers(@PathVariable String heroName) {
-        List<HeroPowerDTO> superheroes = repository.getSuperheroPowers(heroName);
-        return new ResponseEntity<>(superheroes, HttpStatus.OK);
-    }
-
-    @GetMapping(path = {"/city/", "/city"})
-    public ResponseEntity<List<CityHeroDTO>> getAllHeroByCity() {
-        List<CityHeroDTO> superheroes = repository.getAllHeroByCity();
-        return new ResponseEntity<>(superheroes, HttpStatus.OK);
-    }
-
-    @GetMapping(path = "/city/{heroName}")
-    public ResponseEntity<List<CityHeroDTO>> getHeroByCity(@PathVariable String heroName) {
-        List<CityHeroDTO> superheroes = repository.getHeroByCity(heroName);
-        return new ResponseEntity<>(superheroes, HttpStatus.OK);
     }
 
 }
