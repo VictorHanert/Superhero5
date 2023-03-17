@@ -6,6 +6,7 @@ import com.example.superherov5.dto.HeroCountPowersDTO;
 import com.example.superherov5.dto.HeroPowerDTO;
 import com.example.superherov5.entity.Superhero;
 import com.example.superherov5.repositories.IRepository;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -48,6 +49,26 @@ public class SuperheroController {
     public String index(Model model){
         model.addAttribute("superhero", repository.getAllSuperheroes());
         return "index";
+    }
+
+    @GetMapping("/superpower")
+    public String superpowers(Model model, HttpServletResponse response){
+        model.addAttribute("superpower", repository.getAllSuperheroPowers());
+        response.setHeader("Cache-Control", "max-age=3600"); // set cache max age to 1 hour
+
+        return "superpower";
+    }
+
+    @GetMapping("/superpower/{heroName}")
+    public String heroSuperpower(@PathVariable String heroName, Model model){
+        model.addAttribute("superpower", repository.getSuperheroPowers(heroName));
+        return "superpower";
+    }
+
+    @GetMapping("/city")
+    public String city(Model model){
+        model.addAttribute("city", repository.getAllHeroByCity());
+        return "city";
     }
 
 }
