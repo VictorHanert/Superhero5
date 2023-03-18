@@ -22,11 +22,8 @@ public class Superhero {
     public Superhero() {
     }
 
-    // Printing out if heroName is empty
     public String getHeroName() {
-
             return heroName;
-
     }
 
     public int getHeroID() {

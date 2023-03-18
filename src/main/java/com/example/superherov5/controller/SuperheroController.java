@@ -1,20 +1,14 @@
 package com.example.superherov5.controller;
 
-import com.example.superherov5.dto.CityHeroDTO;
 import com.example.superherov5.dto.FormDTO;
-import com.example.superherov5.dto.HeroCountPowersDTO;
-import com.example.superherov5.dto.HeroPowerDTO;
-import com.example.superherov5.entity.Superhero;
 import com.example.superherov5.repositories.IRepository;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,9 +46,8 @@ public class SuperheroController {
     }
 
     @GetMapping("/superpower")
-    public String superpowers(Model model, HttpServletResponse response){
+    public String superpowers(Model model){
         model.addAttribute("superpower", repository.getAllSuperheroPowers());
-        response.setHeader("Cache-Control", "max-age=3600"); // set cache max age to 1 hour
 
         return "superpower";
     }

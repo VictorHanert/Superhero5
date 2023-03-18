@@ -24,6 +24,7 @@ public class Repository_DB implements IRepository {
         try {
             Statement stmt = DbManager.getConnection().prepareStatement(SQL);
             ResultSet rs = stmt.executeQuery(SQL);
+            superheroes.clear();
             while (rs.next()) {
                 int ID = rs.getInt("hero_id");
                 String realName = rs.getString("realName");
@@ -32,10 +33,10 @@ public class Repository_DB implements IRepository {
                 int cityID = rs.getInt("city_id");
                 superheroes.add(new Superhero(ID, realName, heroName, creationYear, cityID));
             }
-            return superheroes;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return superheroes;
     }
 
     public Superhero findSuperheroByID(int heroID) {
@@ -66,6 +67,7 @@ public class Repository_DB implements IRepository {
             PreparedStatement ps = DbManager.getConnection().prepareStatement(SQL);
             ps.setString(1, "%" + searchString.toLowerCase() + "%");
             ResultSet rs = ps.executeQuery();
+            superheroes.clear();
             while (rs.next()) {
                 int heroID = rs.getInt("hero_id");
                 String realName = rs.getString("realName");
@@ -90,6 +92,8 @@ public class Repository_DB implements IRepository {
             PreparedStatement ps = DbManager.getConnection().prepareStatement(SQL);
             ps.setString(1, "%" + searchString.toLowerCase() + "%");
             ResultSet rs = ps.executeQuery();
+
+            heroPowerList.clear();
 
             while (rs.next()) {
                 int hero_id = rs.getInt("hero_id");
@@ -118,6 +122,8 @@ public class Repository_DB implements IRepository {
         try {
             Statement stmt = DbManager.getConnection().prepareStatement(SQL);
             ResultSet rs = stmt.executeQuery(SQL);
+
+            heroPowerList.clear();
 
             while (rs.next()) {
                 int hero_id = rs.getInt("hero_id");
@@ -185,6 +191,8 @@ public class Repository_DB implements IRepository {
             PreparedStatement ps = DbManager.getConnection().prepareStatement(SQL);
             ps.setString(1, "%" + searchString.toLowerCase() + "%");
             ResultSet rs = ps.executeQuery();
+            superheroesByCity.clear();
+
             while (rs.next()) {
                 String heroName = rs.getString("heroName");
                 String cityName = rs.getString("cityName");
@@ -202,6 +210,8 @@ public class Repository_DB implements IRepository {
         try {
             Statement stmt = DbManager.getConnection().prepareStatement(SQL);
             ResultSet rs = stmt.executeQuery(SQL);
+            superheroesByCity.clear();
+
             while (rs.next()) {
                 String heroName = rs.getString("heroName");
                 String cityName = rs.getString("cityName");
