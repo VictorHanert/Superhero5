@@ -26,8 +26,8 @@
                 <a class="nav-link" href="/city">Cities</a>
             </li>
         </ul>
-        <form class="d-inline ms-5">
-            <input class="border-xl" type="search" placeholder="Search" aria-label="Search">
+        <form class="d-inline ms-5" th:object="${superhero}" th:action="@{search}" method="get">
+            <input class="border-xl" type="search" placeholder="Search" aria-label="Search" id="heroName" name="heroName">
             <button class="btn btn-outline-primary" type="submit">Search</button>
         </form>
     </div>

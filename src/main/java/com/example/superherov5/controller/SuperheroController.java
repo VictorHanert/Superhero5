@@ -1,6 +1,7 @@
 package com.example.superherov5.controller;
 
 import com.example.superherov5.dto.FormDTO;
+import com.example.superherov5.entity.Superhero;
 import com.example.superherov5.repositories.IRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +24,19 @@ public class SuperheroController {
         repository = (IRepository) context.getBean(impl);
     }
 
+    @GetMapping({"/",""})
+    public String index(Model model){
+        model.addAttribute("superhero", repository.getAllSuperheroes());
+        return "index";
+    }
+
+    @RequestMapping(value = "search", method = RequestMethod.GET)
+    public String searchFunction(@RequestParam (value = "heroName", required = false) String heroName, Model model) {
+        List<Superhero> superheroes = repository.searchForHero(heroName);
+        model.addAttribute("superhero", repository.searchForHero(heroName));
+        return "search";
+    }
+
     @GetMapping("/add")
     public String showAddSuperheroPage(Model model) {
         FormDTO hero = new FormDTO();
@@ -37,12 +51,6 @@ public class SuperheroController {
     public String addSuperhero(@ModelAttribute FormDTO form) {
         repository.addSuperhero(form);
         return "redirect:/";
-    }
-
-    @GetMapping({"/",""})
-    public String index(Model model){
-        model.addAttribute("superhero", repository.getAllSuperheroes());
-        return "index";
     }
 
     @GetMapping("/superpower")
