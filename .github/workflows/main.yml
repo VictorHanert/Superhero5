@@ -1,0 +1,47 @@
+name: Java App and MySQL DB Deployment Workflow
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Build and Package Java App
+        run: mvn clean install
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: SuperheroKea
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: 'target/*.jar'
+ 
+  execute-sql:
+    runs-on: ubuntu-latest
+
+    env:
+      MYSQL_SERVER_NAME: superherokea.database.windows.net
+      MYSQL_DATABASE_NAME: SuperheroDB
+      MYSQL_USERNAME: ${{ secrets.MYSQL_USERNAME }}
+      MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+
+    steps:
+      - name: Execute SQL Files against Azure Database for MySQL
+        run: |
+          for file in ${GITHUB_WORKSPACE}/src/main/resources/sql/*.sql; do
+            mysql -h $MYSQL_SERVER_NAME -u $MYSQL_USERNAME -p$MYSQL_PASSWORD $MYSQL_DATABASE_NAME < $file
+          done
