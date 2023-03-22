@@ -32,40 +32,17 @@
     </div>
 </nav>
 
-<table class="table table-striped mt-5">
-<tr>
-    <th scope="col">ID</th>
-    <th scope="col">Hero name</th>
-    <th scope="col">Real name</th>
-    <th scope="col">Year</th>
-    <th scope="col">Superpowers</th>
-    <th scope="col"></th>
-    <th scope="col"></th>
-</tr>
+<div class="container mt-5">
+    <h1>Delete superhero</h1>
+    <form th:action="@{/delete}" method="post" th:object="${superhero}">
 
-<tr th:each="superhero : ${superhero}">
-    <th scope="row" th:text="${superhero.heroID}"></th>
-    <td th:text="${superhero.heroName}"></td>
-    <td th:text="${superhero.realName}"></td>
-    <td th:text="${superhero.creationYear}"></td>
-    <td>
-        <a th:href="@{/superpower/{heroName}(heroName=${superhero.heroName})}">
-            <button type="button" class="btn btn-outline-primary">Superpowers</button>
-        </a>
-    </td>
-    <td>
-        <a th:href="@{'/edit/' + ${superhero.heroID}}">
-        <button type="button" class="btn btn-outline-primary">Edit</button>
-        </a>
-    </td><td>
-        <a th:href="@{'/delete/' + ${superhero.heroID}}">
-            <button type="button" class="btn btn-outline-danger">Delete</button>
-        </a>
-    </td>
-</tr>
-</table>
-<a href="/add">
-    <button type="button" class="btn btn-outline-success m-5">Add a superhero</button>
-</a>
+        <input type="hidden" name="id" th:value="*{heroID}">
+
+        <label for="name-field">Hero name: </label>
+        <input id="name-field" name="name" th:value="*{heroName}">
+
+        <button type="submit">Delete superhero</button>
+    </form>
+</div>
 </body>
 </html>

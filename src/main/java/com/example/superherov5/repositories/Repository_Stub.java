@@ -112,4 +112,12 @@ public class Repository_Stub implements IRepository{
     public List<String> getPowers() {
         return null;
     }
+
+    @Override
+    public void deleteSuperhero(Integer heroID) {
+    }
+
+    @Override
+    public void editSuperhero(Superhero superhero) {
+    }
 }

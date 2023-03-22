@@ -32,40 +32,30 @@
     </div>
 </nav>
 
-<table class="table table-striped mt-5">
-<tr>
-    <th scope="col">ID</th>
-    <th scope="col">Hero name</th>
-    <th scope="col">Real name</th>
-    <th scope="col">Year</th>
-    <th scope="col">Superpowers</th>
-    <th scope="col"></th>
-    <th scope="col"></th>
-</tr>
+<div class="container mt-5">
+    <h1>Edit superhero</h1>
+    <form th:action="@{/edit}" method="post" th:object="${superhero}">
 
-<tr th:each="superhero : ${superhero}">
-    <th scope="row" th:text="${superhero.heroID}"></th>
-    <td th:text="${superhero.heroName}"></td>
-    <td th:text="${superhero.realName}"></td>
-    <td th:text="${superhero.creationYear}"></td>
-    <td>
-        <a th:href="@{/superpower/{heroName}(heroName=${superhero.heroName})}">
-            <button type="button" class="btn btn-outline-primary">Superpowers</button>
-        </a>
-    </td>
-    <td>
-        <a th:href="@{'/edit/' + ${superhero.heroID}}">
-        <button type="button" class="btn btn-outline-primary">Edit</button>
-        </a>
-    </td><td>
-        <a th:href="@{'/delete/' + ${superhero.heroID}}">
-            <button type="button" class="btn btn-outline-danger">Delete</button>
-        </a>
-    </td>
-</tr>
-</table>
-<a href="/add">
-    <button type="button" class="btn btn-outline-success m-5">Add a superhero</button>
-</a>
+        <input type="hidden" id="heroID" name="id" th:value="*{heroID}">
+
+        <label for="editHeroName">Hero name: </label>
+        <input id="editHeroName" name="name" th:value="*{heroName}">
+
+        <label for="editRealName">Real name: </label>
+        <input id="editRealName" name="realName" th:value="*{realName}">
+
+        <label for="editCreationYear">Creation year: </label>
+        <input id="editCreationYear" name="creationYear" th:value="*{creationYear}">
+
+        <label for="editCityID">City:</label>
+        <input id="editCityID" name="cityID" th:value="*{cityID}">
+        <!--<select id="editCityID" name="cityID" th:value="*{cityID}">
+            <option th:each="city : ${cities}" th:value="${city}" th:text="${city}"></option>
+        </select>-->
+
+        <button type="submit">Edit superhero</button>
+    </form>
+</div>
+
 </body>
 </html>

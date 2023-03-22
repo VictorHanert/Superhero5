@@ -317,5 +317,43 @@ public class Repository_DB implements IRepository {
         }
     }
 
+    public void deleteSuperhero(Integer heroID) {
+        String SQL = "DELETE FROM superhero WHERE hero_id = ?;";
+        try {
+            PreparedStatement ps = DbManager.getConnection().prepareStatement(SQL);
+            ps.setInt(1, heroID);
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Superhero with ID " + heroID + " has been deleted.");
+            } else {
+                System.out.println("No superhero with ID " + heroID + " found to delete.");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void editSuperhero(Superhero superhero) {
+        String SQL = "UPDATE superhero\n" +
+                "SET heroname=?, realName=?, creation_year=?, city_id=?\n" +
+                "WHERE hero_id = ?;";
+        try {
+            PreparedStatement ps = DbManager.getConnection().prepareStatement(SQL);
+            ps.setString(1, superhero.getHeroName());
+            ps.setString(2, superhero.getRealName());
+            ps.setInt(3, superhero.getCreationYear());
+            ps.setInt(4, superhero.getCityID());
+            ps.setInt(5, superhero.getHeroID());
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Superhero with ID " + superhero.getHeroID() + " has been edited.");
+            } else {
+                System.out.println("No superhero with ID " + superhero.getHeroID() + " found to edit.");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 }

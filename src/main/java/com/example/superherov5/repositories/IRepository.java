@@ -32,4 +32,8 @@ public interface IRepository {
     List<String> getCities();
 
     List<String> getPowers();
+
+    void deleteSuperhero(Integer heroID);
+
+    void editSuperhero(Superhero superhero);
 }
