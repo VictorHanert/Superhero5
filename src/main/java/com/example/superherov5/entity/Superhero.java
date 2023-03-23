@@ -9,6 +9,15 @@ public class Superhero {
     private String heroName;
     private int creationYear;
     private int cityID;
+    private String city;
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
 
     // constructor
     public Superhero(int heroID, String realName, String heroName, int creationYear, int cityID) {

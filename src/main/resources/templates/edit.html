@@ -36,10 +36,10 @@
     <h1>Edit superhero</h1>
     <form th:action="@{/edit}" method="post" th:object="${superhero}">
 
-        <input type="hidden" id="heroID" name="id" th:value="*{heroID}">
+        <input type="hidden" id="heroID" name="heroID" th:value="*{heroID}">
 
         <label for="editHeroName">Hero name: </label>
-        <input id="editHeroName" name="name" th:value="*{heroName}">
+        <input id="editHeroName" name="heroName" th:value="*{heroName}">
 
         <label for="editRealName">Real name: </label>
         <input id="editRealName" name="realName" th:value="*{realName}">

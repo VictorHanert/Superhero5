@@ -1,9 +1,6 @@
 package com.example.superherov5.repositories;
 
-import com.example.superherov5.dto.CityHeroDTO;
-import com.example.superherov5.dto.FormDTO;
-import com.example.superherov5.dto.HeroCountPowersDTO;
-import com.example.superherov5.dto.HeroPowerDTO;
+import com.example.superherov5.dto.*;
 import com.example.superherov5.entity.Superhero;
 import org.springframework.stereotype.Repository;
 
